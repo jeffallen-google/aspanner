@@ -60,7 +60,8 @@ class Aspanner(SessionOperations):
     """
 
     def __init__(self, project, instance, database, timeout=10,
-                 pool=None, default_pool_size=5, default_pool_limit=10):
+                 pool=None, default_pool_size=5, default_pool_limit=10,
+                 credentials=None):
         """ Init a Spanner Database async
 
         NOTICE: .close() should be called before shutdown.
@@ -76,7 +77,9 @@ class Aspanner(SessionOperations):
         """
         self._closed = False
 
-        self._client = spanner_v1.services.spanner.SpannerAsyncClient()
+        self._client = spanner_v1.services.spanner.SpannerAsyncClient(
+            credentials=credentials
+        )
         self.name_project = f'projects/{project}'
         self.name_instance = f'{self.name_project}/instances/{instance}'
         self.name_database = f'{self.name_instance}/databases/{database}'
